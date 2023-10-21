@@ -1,7 +1,10 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
+import { TamaguiProvider } from "tamagui";
+import config from "../tamagui.config";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -18,7 +21,8 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
+    InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
     ...FontAwesome.font,
   });
 
@@ -42,10 +46,19 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   return (
-    <Stack>
-      <Stack.Screen name="index" />
+    <TamaguiProvider config={config} defaultTheme="dark">
+      <StatusBar style="light" />
 
-      <Stack.Screen name="results" />
-    </Stack>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+
+        <Stack.Screen
+          name="results"
+          options={{
+            presentation: "modal",
+          }}
+        />
+      </Stack>
+    </TamaguiProvider>
   );
 }
